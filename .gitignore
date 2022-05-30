@@ -1,0 +1,6 @@
+app/vendor/
+app/tmp/
+app/logs/
+app/config/config.php
+builds/
+tests/tmp/

@@ -1,0 +1,24 @@
+<include href="templates/header.html" />
+<p>Well this is awkward... We encountered an error! Please try your request again later.</p>
+<p>
+	Error message:
+	<pre>{{ @ERROR.status }}
+{{ @clean_text }}</pre>
+</p>
+<p>
+	<check if="{{ @email_sent }}">
+		<true>We have been notified of the error. We appologize for the trouble.</true>
+		<false>If this error continues, please <a href="/contact">contact us</a> to let us know.</false>
+	</check>
+</p>
+<check if="{{ @_is_dev }}">
+	<true>
+		<repeat group="{{ @details }}" key="{{ @section }}" value="{{ @lines }}">
+			<p>
+				{{ @section }}:
+				<pre>{{ print_r(@lines, true) }}</pre>
+			</p>
+		</repeat>
+	</true>
+</check>
+<include href="templates/footer.html" />

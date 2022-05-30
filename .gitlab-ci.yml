@@ -1,0 +1,30 @@
+stages:
+- test
+
+f3_unit_tests:
+  stage: test
+  image: php:7.4
+  variables:
+    MYSQL_DATABASE: db_test
+    MYSQL_ROOT_PASSWORD: testing
+  cache:
+    paths:
+    - app/vendor/
+  services:
+  - mariadb:10.3
+  script:
+  - bash tests/docker_install.sh
+  - mysql --host="mariadb" --user="root" --password="$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE < app/db/testing.sql
+  - php tests/test_runner.php
+
+include:
+- template: Security/SAST.gitlab-ci.yml
+- template: Security/Secret-Detection.gitlab-ci.yml
+
+# sast
+variables:
+  SAST_EXCLUDED_PATHS: "spec, test, tests, tmp, vendor"
+
+secret_detection:
+  variables:
+    SECRET_DETECTION_EXCLUDED_PATHS: app/vendor/

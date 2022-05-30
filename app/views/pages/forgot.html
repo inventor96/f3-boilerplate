@@ -1,0 +1,20 @@
+<div class="row align-items-center forgot-area">
+	<div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+		<div class="display-section">
+			<h2 class="text-center">Password Reset</h2>
+			<p class="lead">If you forgot your password, enter your email here. If we have your email address on file, we will send you an email with instructions to reset your password.</p>
+			<form id="forgot-form">
+				<div class="form-floating mb-3">
+					<input type="email" id="email" name="email" class="form-control" placeholder="Enter email" required>
+					<label for="email">Email</label>
+				</div>
+				<include href="templates/recaptcha.html" />
+				<div class="form-error alert alert-danger mt-3 mb-0 d-none-init" role="alert"></div>
+				<button type="submit" class="btn btn-primary float-end mt-3">Submit</button>
+			</form>
+		</div>
+		<div class="display-section d-none-init">
+			<p class="lead">If we have your email address on file, we will send you an email with instructions to reset your password.</p>
+		</div>
+	</div>
+</div>

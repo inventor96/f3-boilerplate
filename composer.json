@@ -1,0 +1,15 @@
+{
+    "config": {
+        "vendor-dir": "./app/vendor"
+    },
+    "require": {
+        "bcosca/fatfree": "^3.8",
+        "phpmailer/phpmailer": "^6.1",
+        "firebase/php-jwt": "^5.2",
+        "google/recaptcha": "^1.2",
+        "ikkez/f3-cortex": "1.*"
+    },
+    "require-dev": {
+        "inventor96/fatfree-test-manager": "^0.3.0"
+    }
+}

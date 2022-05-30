@@ -1,0 +1,3 @@
+Hi {{ @fname }},
+
+It looks like you alreay have an account with us! If you've forgotten your password, please visit the "Forgot Password" page at {{ @base_url }}forgot.

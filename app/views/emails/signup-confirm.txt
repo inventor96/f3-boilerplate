@@ -1,0 +1,5 @@
+Hi {{ @fname }},
+
+We're glad you're here!
+
+There's just one more step: please visit {{ @confirm_link }} to verify your account.

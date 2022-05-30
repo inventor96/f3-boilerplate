@@ -1,0 +1,12 @@
+An error occurred in the web app.
+
+Error message:
+{{ @ERROR.status }}
+{{ @ERROR.text }}
+
+<repeat group="{{ @details }}" key="{{ @section }}" value="{{ @lines }}">
+{{ @section }}:
+{{ print_r(@lines, true) }}
+
+
+</repeat>

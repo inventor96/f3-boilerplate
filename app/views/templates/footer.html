@@ -1,0 +1,33 @@
+		</main>
+		<footer class="navbar-dark bg-secondary flex-shrink-0 mt-3 py-3">
+			<div class="container">
+				<ul class="nav border-bottom pb-3 mb-3 justify-content-center">
+					<navlink class="link-dark" href="/">Home</navlink>
+					<navlink class="link-dark" href="/about">About</navlink>
+					<navlink class="link-dark" href="/contact">Contact</navlink>
+					<navlink class="link-dark" href="/legal">Legal</navlink>
+				</ul>
+				<div class="text-center">Copyright &copy; Your Name 2099</div>
+			</div>
+		</footer>
+		<check if="{{ file_exists(@_UI.'pages/'.@_page.'-footer.html') }}">
+			<true>
+				<include href="{{ 'pages/'.@_page.'-footer.html' }}" />
+			</true>
+		</check>
+		<check if="{{ is_array(@_js) && count(@_js) }}">
+			<true>
+				<check if="{{ @_is_dev }}">
+					<true>
+						<repeat group="{{ @_js }}" value="{{ @_file }}">
+							<script src="/js/{{ @_file }}.js"></script>
+						</repeat>
+					</true>
+					<false>
+						<script src="/min/js?f={{ implode(',', @_js) }}&v={{ @_js_v }}"></script>
+					</false>
+				</check>
+			</true>
+		</check>
+	</body>
+</html>

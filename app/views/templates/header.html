@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<check if="{{ is_array(@_css) && count(@_css) }}">
+			<true>
+				<check if="{{ @_is_dev }}">
+					<true>
+						<repeat group="{{ @_css }}" value="{{ @_file }}">
+							<link rel="stylesheet" href="/css/{{ @_file }}.css">
+						</repeat>
+					</true>
+					<false>
+						<link rel="stylesheet" href="/min/css?f={{ implode(',', @_css) }}&v={{ @_css_v }}">
+					</false>
+				</check>
+			</true>
+		</check>
+		<title><check if="{{ isset(@_title) }}"><true>{{ @_title }} | </true></check>F3 Boilerplate</title>
+		<check if="{{ file_exists(@_UI.'pages/'.@_page.'-header.html') }}">
+			<true>
+				<include href="{{ 'pages/'.@_page.'-header.html' }}" />
+			</true>
+		</check>
+	</head>
+	<body class="d-flex flex-column min-vh-100">
+		<check if="{{ !@_is_prod }}">
+			<true>
+				<div class="alert alert-warning m-0 p-1">
+					<h5 class="alert-heading text-center m-0">{{ @_env }} environment</h5>
+				</div>
+			</true>
+		</check>
+		<nav class="navbar navbar-expand-md navbar-dark bg-primary mb-3 flex-shrink-0">
+			<div class="container">
+				<a class="navbar-brand" href="/">F3 Boilerplate <i class="bi bi-caret-right-square-fill"></i></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-header" aria-controls="nav-header" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="nav-header">
+					<include href="templates/nav-header.html" />
+				</div>
+			</div>
+		</nav>
+		<main class="container flex-shrink-0 flex-grow-1">

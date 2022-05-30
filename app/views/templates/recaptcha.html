@@ -1,0 +1,18 @@
+<check if="{{ @_is_dev }}">
+	<false>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<div class="form-group">
+			<div id="recaptcha-container">
+				<div class="g-recaptcha" data-sitekey="{{ @site_key }}"></div>
+				<div class="input-error-icon recaptcha-error">&nbsp;</div>
+			</div>
+			<div class="invalid-feedback recaptcha-error">Please prove that you're not a robot.</div>
+		</div>
+	</false>
+	<true>
+		<script src="/js/recaptchadev.js"></script>
+		<input type="hidden" id="is_dev" name="is_dev" value="true">
+		<div class="form-group">Normally a reCaptcha would be here, but you're on a dev instance.</div>
+	</true>
+</check>
+<input type="hidden" id="recaptcha" name="recaptcha" value="">

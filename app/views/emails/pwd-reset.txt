@@ -1,0 +1,5 @@
+Hi {{ @fname }},
+
+We received a request to help you reset your password. If this was you, please visit {{ @reset_link }} to continue with your request.
+
+If this was not you, please let us know so we can look into the situation.

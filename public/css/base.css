@@ -1,0 +1,21 @@
+button:disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+/* .pagination .page-item:not(.active) .page-link {
+    border: 1px solid #acacac !important;
+} */
+
+.d-none-init {
+    display: none;
+}
+
+#recaptcha-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.recaptcha-error {
+    display: none;
+}

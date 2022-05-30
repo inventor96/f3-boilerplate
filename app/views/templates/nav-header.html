@@ -1,0 +1,12 @@
+<ul class="navbar-nav me-auto">
+	<navlink href="/">Home</navlink>
+</ul>
+<ul class="navbar-nav">
+	<requireroles roles="ROLE_ANONYMOUS">
+		<navlink href="/signup">Sign Up</navlink>
+		<navlink href="/login">Log In</navlink>
+	</requireroles>
+	<requireroles roles="LIST_AUTHENTICATED">
+		<navlink href="/logout">Log Out</navlink>
+	</requireroles>
+</ul>
