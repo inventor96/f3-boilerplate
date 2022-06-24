@@ -17,7 +17,7 @@ class TemplateExtension {
 	 * @return string The resolved attributes
 	 */
 	protected static function buildAttrs(array $attrs): string {
-		$t = \Template::instance();
+		$t = Template::instance();
 		$out = [];
 		foreach ($attrs as $key => $value) {
 			// build dynamic tokens

@@ -5,6 +5,7 @@ use Base;
 use Models\Helpers;
 use Models\Resource;
 use Models\UserRole;
+use Web;
 
 class Home extends ControllerBase {
 	public function homePage(Base $f3, array $args) {
@@ -34,7 +35,7 @@ class Home extends ControllerBase {
 
 		// output minified files
 		if ($files) {
-			echo \Web::instance()->minify($files, null, true, $path);
+			echo Web::instance()->minify($files, null, true, $path);
 		}
 	}
 

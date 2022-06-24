@@ -1,6 +1,7 @@
 <?php
 namespace Models;
 
+use Base;
 use Exceptions\InvalidPath;
 use Exceptions\InvalidType;
 
@@ -113,7 +114,7 @@ class Resource {
 		$safe_files = self::getFileList($type, $files, false, $include_default);
 
 		// compile versions
-		$versions = \Base::instance()->versions[$safe_type];
+		$versions = Base::instance()->versions[$safe_type];
 		$version_array = [];
 		foreach ($safe_files as $name) {
 			$version_array[] = isset($versions[$name]) ? $versions[$name] : 0;

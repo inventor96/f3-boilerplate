@@ -2,14 +2,18 @@
 namespace App;
 
 use Base;
+use DateTimeZone;
 use DB\SQL;
 use Models\Creds;
 use Models\Mailer;
 use Models\Resource;
+use PDO;
 use PHPMailer\PHPMailer\Exception;
+use Prefab;
 use Registry;
+use Template;
 
-class App extends \Prefab {
+class App extends Prefab {
 	/** @var Base $f3 The framework instance */
 	private $f3 = null;
 
@@ -217,7 +221,7 @@ class App extends \Prefab {
 			// check if message needs cleaned up for the user
 			$clean_text = $f3->ERROR['text'];
 			if (preg_match('/\[[^:]+?php:\d+\]/', $clean_text)) {
-				/** @var \Exception $e */
+				/** @var Exception $e */
 				$e = $f3->EXCEPTION;
 
 				// check if the message came from one of our exceptions
@@ -276,8 +280,8 @@ class App extends \Prefab {
 							'ERROR' => $f3->ERROR,
 							'details' => $details,
 						];
-						$mail->Body = \Template::instance()->render('emails/error.html', 'text/html', $email_template_params);
-						$mail->AltBody = \Template::instance()->render('emails/error.txt', 'text/plain', $email_template_params);
+						$mail->Body = Template::instance()->render('emails/error.html', 'text/html', $email_template_params);
+						$mail->AltBody = Template::instance()->render('emails/error.txt', 'text/plain', $email_template_params);
 
 						$mail->send();
 						$email_sent = true;
@@ -351,7 +355,7 @@ class App extends \Prefab {
 				];
 
 				// display error page
-				echo \Template::instance()->render('pages/error.html', 'text/html', $template_params);
+				echo Template::instance()->render('pages/error.html', 'text/html', $template_params);
 			}
 		});
 	}
@@ -384,10 +388,10 @@ class App extends \Prefab {
 			$db_creds['username'],
 			$db_creds['password'],
 			[
-				\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
-				\PDO::ATTR_EMULATE_PREPARES => false,
-				\PDO::ATTR_STRINGIFY_FETCHES => false,
-				\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+				PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
+				PDO::ATTR_EMULATE_PREPARES => false,
+				PDO::ATTR_STRINGIFY_FETCHES => false,
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 			]);
 
 		if ($this->f3->is_prod || $this->f3->is_testing) {
@@ -421,6 +425,6 @@ class App extends \Prefab {
 	 * Sets the server timezone
 	 */
 	private function setTz() {
-		$this->f3->srv_tz = new \DateTimeZone($this->f3->config['srv_tz'] ?: 'UTC');
+		$this->f3->srv_tz = new DateTimeZone($this->f3->config['srv_tz'] ?: 'UTC');
 	}
 }

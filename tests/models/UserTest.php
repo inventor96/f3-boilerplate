@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Models;
 
+use Base;
 use DateTimeZone;
 use Exceptions\InvalidValue;
 use Exceptions\MissingField;
@@ -19,7 +20,7 @@ class UserTest extends TestBase {
 		$u->timezone = new DateTimeZone('UTC');
 		$u->email = 'nowhere@f3_boilerplate.net';
 		$u->save();
-		\Base::instance()->tz = $u->tz;
+		Base::instance()->tz = $u->tz;
 		return $u;
 	}
 
@@ -59,7 +60,7 @@ class UserTest extends TestBase {
 			User::createUser('fname', 'lname', 'email', 'password', $tz, []);
 			$this->fail('should have failed');
 		} catch (InvalidValue $e) {
-			$this->expectStringContains('enter a valid email address', $e->getMessage());
+			$this->expectStringContains('email address is invalid', $e->getMessage());
 		}
 		try {
 			User::createUser('fname', 'lname', 'email@idonot.exist', 'password', $tz, []);

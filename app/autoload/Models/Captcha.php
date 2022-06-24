@@ -1,6 +1,7 @@
 <?php
 namespace Models;
 
+use Base;
 use ReCaptcha\ReCaptcha;
 
 class Captcha {
@@ -11,7 +12,7 @@ class Captcha {
 	 * @return bool Indicates whether it passes
 	 */
 	public static function check(string $input): bool {
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 
 		// don't verify on dev
 		if ($f3->get('is_dev')) {

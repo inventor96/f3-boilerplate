@@ -3,6 +3,7 @@ namespace Tests;
 
 use App\App;
 use Base;
+use Test;
 
 abstract class TestBase extends \inventor96\F3TestManager\TestBase {
 	private $truncations = ['SET foreign_key_checks = 0;'];
@@ -10,7 +11,7 @@ abstract class TestBase extends \inventor96\F3TestManager\TestBase {
 	/** @var bool $disable_truncation Set this to true if trunation is nott necessary for the current test */
 	protected $disable_truncation = false;
 
-	/** @var \Base $f3 The framework instance */
+	/** @var Base $f3 The framework instance */
 	protected $f3;
 
 	const REQ_TYPE_AJAX = '[ajax]';
@@ -45,9 +46,9 @@ abstract class TestBase extends \inventor96\F3TestManager\TestBase {
 	/**
 	 * Creates the basics for a unit test class
 	 *
-	 * @param \Test $test_instance The instance of the `\Test` class to use
+	 * @param Test $test_instance The instance of the `Test` class to use
 	 */
-	public function __construct(\Test &$test_instance) {
+	public function __construct(Test &$test_instance) {
 		parent::__construct($test_instance, [get_class()]);
 		$this->f3 = Base::instance();
 

@@ -1,9 +1,10 @@
 <?php
 namespace Models;
 
+use Base;
 use Exceptions\InvalidValue;
 use Exceptions\MissingField;
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 class Helpers {
 	/**
@@ -71,7 +72,7 @@ class Helpers {
 	 * @return string The encoded and signed JWT
 	 */
 	public static function encodeJwt(array $payload): string {
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 		$key = Creds::instance()->get('jwt');
 		$payload += [
 			'iss' => $f3->config['base_url'],
@@ -138,7 +139,7 @@ class Helpers {
 				break;
 		}
 
-		$results = \Base::instance()->DB->exec($query, null, $cache_seconds);
+		$results = Base::instance()->DB->exec($query, null, $cache_seconds);
 		return $id_index ? array_column($results, 'name', 'id') : $results;
 	}
 

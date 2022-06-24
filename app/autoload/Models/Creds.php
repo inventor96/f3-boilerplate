@@ -1,13 +1,15 @@
 <?php
 namespace Models;
 
+use Base;
 use Exceptions\ObjectNotDefined;
+use Prefab;
 
-class Creds extends \Prefab {
+class Creds extends Prefab {
 	private $cache = [];
 
 	public function __construct() {
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 
 		// get creds with environment-specific overrides
 		if (file_exists(CONFIG_DIR.'credentials.php')) {

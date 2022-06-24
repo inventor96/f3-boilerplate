@@ -162,16 +162,8 @@ class User extends Cortex {
 			throw new InvalidValue("All elements in the roles array must be of the UserRole type");
 		}
 
-		// check email validity
-		$audit = \Audit::instance();
-		if (!$audit->email($email)) {
-			if ($audit->email($email, false)) {
-				$domain = explode('@', $email, 2)[1];
-				throw new InvalidValue("We can't find the email host for '{$domain}'. Are you sure you typed it correctly?");
-			} else {
-				throw new InvalidValue("Please enter a valid email address");
-			}
-		}
+		// check email validity, letting the exceptions filter up to the user
+		Mailer::checkEmailValidity($email, true);
 
 		// check a user doesn't already exist
 		if (self::emailInUse($email)) {
@@ -208,7 +200,7 @@ class User extends Cortex {
 			throw new ObjectNotDefined("We can't verify a user that doesn't exist.");
 		}
 
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 
 		// generate account confirmation link
 		$jwt = Helpers::encodeJwt(['email' => $this->email, 'exp' => strtotime('+24 hours')]);
@@ -301,7 +293,7 @@ class User extends Cortex {
 	 * @return bool Whether the given credentials are correct
 	 */
 	public function checkPwd(string $password): bool {
-		// decided not to use F3's \Auth::login() method because it's not safe against timing attacks to determine the presence of an account
+		// decided not to use F3's Auth::login() method because it's not safe against timing attacks to determine the presence of an account
 		$db_pwd = $this->password ?: '';
 		$correct = password_verify($password, $db_pwd);
 		$correct = strlen($password) > 0 && $correct;

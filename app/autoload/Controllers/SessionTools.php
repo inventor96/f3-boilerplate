@@ -3,6 +3,8 @@ namespace Controllers;
 
 use Base;
 use DateTimeZone;
+use DB\SQL\Session;
+use Exception;
 use Models\User;
 
 class SessionTools {
@@ -139,7 +141,7 @@ class SessionTools {
 		}
 
 		// start/load the session
-		new \DB\SQL\Session($f3->DB, 'user_sessions', true, function ($s) { return true; }, 'CSRF');
+		new Session($f3->DB, 'user_sessions', true, function ($s) { return true; }, 'CSRF');
 
 		// reset 'remember me' and session id cookie
 		if (!$skip_remember_reset && $f3->SESSION['keep_session']) {
@@ -162,7 +164,7 @@ class SessionTools {
 			try {
 				$f3->tz = new DateTimeZone($f3->COOKIE['tz']);
 				return;
-			} catch (\Exception $e) { /* covered by next check */ }
+			} catch (Exception $e) { /* covered by next check */ }
 		}
 
 		// next try pulling from the user's default
@@ -170,7 +172,7 @@ class SessionTools {
 			try {
 				$f3->tz = $f3->user->timezone;
 				return;
-			} catch (\Exception $e) { /* covered by next check */ }
+			} catch (Exception $e) { /* covered by next check */ }
 		}
 
 		// hopefully never needed, but just in case...

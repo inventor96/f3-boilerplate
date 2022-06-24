@@ -1,6 +1,9 @@
 <?php
 namespace Models;
 
+use Audit;
+use Base;
+use Exceptions\InvalidValue;
 use Exceptions\MailerError;
 use Exceptions\ObjectNotDefined;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -20,7 +23,7 @@ class Mailer {
 	 */
 	public static function createMailer(bool $catch = true): PHPMailer {
 		// get creds
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 		$creds = Creds::instance()->get('email');
 		$config = $f3->config['email'];
 
@@ -128,7 +131,7 @@ class Mailer {
 	 * @return bool The result of sending the email.
 	 */
 	public static function sendTemplate(string $template_name, array $to, string $subject, array $params = [], ?string $from_addr = null, ?string $from_name = null, array $reply_to = []): bool {
-		$f3 = \Base::instance();
+		$f3 = Base::instance();
 
 		// check for templates
 		$txt_exists = file_exists($f3->UI.$template_name.'.txt');
@@ -151,5 +154,28 @@ class Mailer {
 
 		// send it off
 		return self::send($to, $subject, $text, $html, $from_addr, $from_name, $reply_to);
+	}
+
+	public static function checkEmailValidity(string $email, bool $throw_exception = true): bool {
+		$audit = Audit::instance();
+
+		// check format
+		if (!$audit->email($email, false)) {
+			if ($throw_exception) {
+				throw new InvalidValue("The supplied email address is invalid.");
+			}
+			return false;
+		}
+
+		// check domain
+		if (!$audit->email($email, true)) {
+			$domain = explode('@', $email, 2)[1];
+			if ($throw_exception) {
+				throw new InvalidValue("We can't find the email host for '{$domain}'. Are you sure you typed it correctly?");
+			}
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -7,6 +7,7 @@ use Models\Helpers;
 use Models\Resource;
 use Models\TemplateExtension;
 use Models\UserRole;
+use Template;
 
 class ControllerBase {
 	/** @var array $template_params An associative array of parameters used in the default templates */
@@ -98,7 +99,7 @@ class ControllerBase {
 		]);
 
 		// return to client
-		echo \Template::instance()->render('templates/default.html', 'text/html', $params, $cache);
+		echo Template::instance()->render('templates/default.html', 'text/html', $params, $cache);
 	}
 
 	/**
@@ -126,7 +127,7 @@ class ControllerBase {
 			'_js_v' => $js_v,
 		]);
 
-		echo \Template::instance()->render('templates/inline.html', 'text/html', $params);
+		echo Template::instance()->render('templates/inline.html', 'text/html', $params);
 	}
 
 	/**
