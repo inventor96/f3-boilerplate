@@ -34,7 +34,7 @@ CREATE TABLE `users` (
   `created_dt` datetime NOT NULL DEFAULT current_timestamp(),
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
-  KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
