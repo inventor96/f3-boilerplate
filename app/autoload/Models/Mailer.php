@@ -134,8 +134,8 @@ class Mailer {
 		$f3 = Base::instance();
 
 		// check for templates
-		$txt_exists = file_exists($f3->UI.$template_name.'.txt');
-		$html_exists = file_exists($f3->UI.$template_name.'.html');
+		$txt_exists = file_exists($f3->UI.'emails/'.$template_name.'.txt');
+		$html_exists = file_exists($f3->UI.'emails/'.$template_name.'.html');
 
 		if (!$txt_exists && !$html_exists) {
 			throw new ObjectNotDefined("The '{$template_name}' template does not exist.");
@@ -146,10 +146,10 @@ class Mailer {
 		$text = '';
 		$html = '';
 		if ($txt_exists) {
-			$text = $t->render($f3->UI.$template_name.'.txt', 'text/plain', $params);
+			$text = $t->render('emails/'.$template_name.'.txt', 'text/plain', $params);
 		}
 		if ($html_exists) {
-			$html = $t->render($f3->UI.$template_name.'.html', 'text/html', $params);
+			$html = $t->render('emails/'.$template_name.'.html', 'text/html', $params);
 		}
 
 		// send it off
