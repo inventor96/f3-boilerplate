@@ -7,6 +7,7 @@ use Exceptions\DuplicateIdentifier;
 use Exceptions\MailerError;
 use Models\Captcha;
 use Models\Creds;
+use Models\EmailRecipient;
 use Models\Helpers;
 use Models\Mailer;
 use Models\User as ModelsUser;
@@ -50,7 +51,7 @@ class User extends ControllerBase {
 		} catch (DuplicateIdentifier $e) {
 			// send confirmation email for existing account
 			Mailer::sendTemplate('signup-existing',
-				[$r['email'], $r['fname'].' '.$r['lname']],
+				[new EmailRecipient($r['email'], $r['fname'].' '.$r['lname'])],
 				'Existing Account',
 				[
 					'fname' => $r['fname'],

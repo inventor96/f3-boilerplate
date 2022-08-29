@@ -208,7 +208,7 @@ class User extends Cortex {
 
 		// send confirmation email
 		Mailer::sendTemplate('signup-confirm',
-			[$this->email, $this->first_name.' '.$this->last_name],
+			[new EmailRecipient($this->email, $this->first_name.' '.$this->last_name)],
 			'Sign Up Confirmation',
 			[
 				'fname' => $this->first_name,
@@ -255,7 +255,7 @@ class User extends Cortex {
 
 		// send password reset email
 		Mailer::sendTemplate('pwd-reset',
-			[$this->email, $this->first_name.' '.$this->last_name],
+			[new EmailRecipient($this->email, $this->first_name.' '.$this->last_name)],
 			'Password Rest', [
 				'fname' => $this->first_name,
 				'reset_link' => $reset_link,

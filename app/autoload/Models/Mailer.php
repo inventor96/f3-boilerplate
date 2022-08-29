@@ -51,7 +51,7 @@ class Mailer {
 	/**
 	 * Send a simple email
 	 *
-	 * @param array $to The list of addresses to send this email to. Can be single or double dimension array. The second array element, if present, is the display name.
+	 * @param EmailRecipient[] $to The list of addresses to send this email to. Can be single or double dimension array. The second array element, if present, is the display name.
 	 * @param string $subject The subject line of the email to be sent.
 	 * @param string $text_message The plain-text version of the message.
 	 * @param string $html_message The HTML-formatted message to send. If omitted, the nl2br() version of $text_message will be used.
@@ -75,40 +75,16 @@ class Mailer {
 			$mailer->isHTML(true);
 			$mailer->Subject = $subject;
 			$mailer->Body    = $html_message ?? nl2br($text_message);
-			$mailer->AltBody = empty($text_message) ? preg_replace('/<br\s*/?>/i', "\n", $html_message) : $text_message;
+			$mailer->AltBody = empty($text_message) ? preg_replace('/<br\s*\/?>/i', "\n", $html_message) : $text_message;
 
 			// recipients
 			foreach ($to as $recipient) {
-				// separate addrs and names
-				if (is_string($recipient)) {
-					$mailer->addAddress($recipient);
-				} elseif (is_array($recipient)) {
-					switch (count($recipient)) {
-						case 1:
-							$mailer->addAddress($recipient[0]);
-							break;
-						case 2:
-							$mailer->addAddress($recipient[0], $recipient[1]);
-							break;
-					}
-				}
+				$mailer->addAddress($recipient->email, $recipient->name);
 			}
 
 			// reply-to
 			foreach ($reply_to as $recipient) {
-				// separate addrs and names
-				if (is_string($recipient)) {
-					$mailer->addReplyTo($recipient);
-				} elseif (is_array($recipient)) {
-					switch (count($recipient)) {
-						case 1:
-							$mailer->addReplyTo($recipient[0]);
-							break;
-						case 2:
-							$mailer->addReplyTo($recipient[0], $recipient[1]);
-							break;
-					}
-				}
+				$mailer->addReplyTo($recipient->email, $recipient->name);
 			}
 
 			// fire in the hole!
@@ -122,7 +98,7 @@ class Mailer {
 	 * Sends an email based on a template provided.
 	 *
 	 * @param string $template_name The name of the template as found in `app/views/emails/`.
-	 * @param array $to The list of addresses to send this email to. Can be single or double dimension array. The second array element, if present, is the display name.
+	 * @param EmailRecipient[] $to The list of addresses to send this email to. Can be single or double dimension array. The second array element, if present, is the display name.
 	 * @param string $subject The subject line of the email to be sent.
 	 * @param array $params An associative array containing the params used in the template.
 	 * @param string $from_addr The address the email will come from. Defaults to the "no-reply" email in the config.
@@ -156,7 +132,15 @@ class Mailer {
 		return self::send($to, $subject, $text, $html, $from_addr, $from_name, $reply_to);
 	}
 
-	public static function checkEmailValidity(string $email, bool $throw_exception = true): bool {
+	/**
+	 * Checks an email address for validity, optionally checking DNS records to make sure the email domain exists.
+	 *
+	 * @param string $email The address the check.
+	 * @param boolean $throw_exception Throw an exception on an invalid input.
+	 * @param boolean $skip_dns Don't check the DNS records.
+	 * @return boolean Whether the check passed or not.
+	 */
+	public static function checkEmailValidity(string $email, bool $throw_exception = true, bool $skip_dns = false): bool {
 		$audit = Audit::instance();
 
 		// check format
@@ -168,7 +152,7 @@ class Mailer {
 		}
 
 		// check domain
-		if (!$audit->email($email, true)) {
+		if (!$skip_dns && !$audit->email($email, true)) {
 			$domain = explode('@', $email, 2)[1];
 			if ($throw_exception) {
 				throw new InvalidValue("We can't find the email host for '{$domain}'. Are you sure you typed it correctly?");
