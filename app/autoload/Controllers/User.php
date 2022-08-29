@@ -2,6 +2,7 @@
 namespace Controllers;
 
 use Base;
+use DateTimeZone;
 use Exceptions\DuplicateIdentifier;
 use Exceptions\MailerError;
 use Models\Captcha;
@@ -44,7 +45,7 @@ class User extends ControllerBase {
 
 		// create user
 		try {
-			$user = ModelsUser::createUser($r['fname'], $r['lname'], $r['email'], $r['password'], $r['tz'], [UserRole::getById(UserRole::ROLE_USER)]);
+			$user = ModelsUser::createUser($r['fname'], $r['lname'], $r['email'], $r['password'], new DateTimeZone($r['tz']), [UserRole::getById(UserRole::ROLE_USER)]);
 			$user->sendVerificationEmail();
 		} catch (DuplicateIdentifier $e) {
 			// send confirmation email for existing account
