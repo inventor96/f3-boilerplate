@@ -8,7 +8,7 @@ Example:
 	'roles' => [                // required - The user roles that are allowed to access this route (see the UserRole model for individual roles and preset arrays)
 		UserRole::ROLE_ANONYMOUS,
 	],
-	'redirect' => '/',          // optional - The URL to redirect to if a user does not have an allowed role (defaults to '/')
+	'redirect' => '/',          // optional - The URL to redirect to if a user does not have an allowed role (default is to return 401 unauthorized)
 	'ttl' => 3600,              // optional - How long the result is cached for
 	'kbps' => 128,              // optional - Throttle speed
 	'csrf' => true,             // optional - whether a valid CSRF is required
