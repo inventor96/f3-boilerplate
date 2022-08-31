@@ -23,6 +23,9 @@ return [
 		'vdefault' => 1, // sets defaults for form validation with bootstrap, automatically included with 'validate'
 
 		// pages
+		'forgot' => 1,
 		'login' => 1,
+		'password-reset' => 1,
+		'signup' => 1,
 	],
 ];
