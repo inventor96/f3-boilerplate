@@ -372,4 +372,8 @@ class TemplateExtension {
 					.(Template::instance())->build($node)
 				.'<?php endif; ?>';
 	}
+
+	public static function return(): string {
+		return "<?php return; ?>";
+	}
 }
