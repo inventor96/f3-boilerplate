@@ -91,6 +91,33 @@ class TemplateExtension {
 	}
 
 	/**
+	 * Checks for a boolean HTML attribute
+	 *
+	 * @param array $attrib The `@attrib` key from the node.
+	 * @param string $attrib_name The name of the HTML attribute to check on.
+	 * @return bool The state of the specified attribute.
+	 */
+	protected static function getHtmlBool(array $attrib, string $attrib_name): bool {
+		// doesn't exist
+		if (!in_array($attrib_name, array_keys($attrib), true)) {
+			return false;
+		}
+
+		// exists with strings that should be false
+		if (in_array(trim($attrib[$attrib_name]), ['false', 'off', 'no', 'null'], true)) {
+			return false;
+		}
+
+		// exists as a boolean
+		if ($attrib[$attrib_name] === null) {
+			return true;
+		}
+
+		// exists with some other string
+		return boolval($attrib[$attrib_name]);
+	}
+
+	/**
 	 * Sets up the templating extensions. Call this before any templates are rendered.
 	 */
 	public static function setUp(): void {
@@ -337,9 +364,11 @@ class TemplateExtension {
 			}
 		}
 
+		$inverted = self::getHtmlBool($node['@attrib'], 'invert') ? '' : '!';
+
 		// build final php
 		unset($node['@attrib']);
-		return '<?php if (!empty(array_intersect('.self::tokenizeAttrs($roles).', $_user_roles))): ?>'
+		return '<?php if ('.$inverted.'empty(array_intersect('.self::tokenizeAttrs($roles).', $_user_roles))): ?>'
 					.(Template::instance())->build($node)
 				.'<?php endif; ?>';
 	}
